@@ -2,11 +2,12 @@ public class myCircle{
 public PVector pos = new PVector();
 float radius;
 PVector velocity = new PVector();
-boolean vanishOnImpact = true;
+boolean vanishOnImpact = false;
 boolean bounceOnImpact = true;
 boolean constrainedInFrame = true;
 boolean gotHitX;
 boolean gotHitY;
+boolean gotHit;
 
 public myCircle(float posX, float posY, float radius, float xVelocity, float yVelocity)
 {
