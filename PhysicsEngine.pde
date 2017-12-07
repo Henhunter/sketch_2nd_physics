@@ -61,15 +61,29 @@ public class PhysicsEngine
 
   void collisionDetection()
   {
-       if (instanceof PhysicsObject == myCircle && instanceof physicsobject2 == circle) 
-    circleToCircleDetection();
+    PhysicsObject first;
+    PhysicsObject second;
+    //    
+    for (int i=0; i<objectArray.size(); i++)
+    {
+      for (int j=i+1; j<objectArray.size(); j++)
+      {
+        first = objectArray.get(i);
+        second = objectArray.get(j);
+        if (first instanceof myCircle && second instanceof myCircle)
+        {
+          if (circleToCircleDetection((myCircle)first, (myCircle)second))
+            collision((myCircle)first, (myCircle)second);
+        }
+      }
+    }
     /*    if (instanceof physicsobject == rect && instanceof physicsobject2 == rect) 
      rectToRectDetection();
      if (instanceof physicsobject == circle && instanceof physicsobject2 == rect || instanceof physicsobject == rect && instanceof physicsobject2 == circle) 
      circleToRectDetection();     */
   }
 
-  void rectToRectDetection(float firstRectX, float firstRectWidth, float secondRectX, float secondRectWidth, float firstRectY, float firstRectHeight, float secondRectY, float secondRectHeight) {
+  boolean rectToRectDetection(float firstRectX, float firstRectWidth, float secondRectX, float secondRectWidth, float firstRectY, float firstRectHeight, float secondRectY, float secondRectHeight) {
     float maxFirstRectX = max(firstRectX, firstRectX+firstRectWidth);
     float minFirstRectX = min(firstRectX, firstRectX+firstRectWidth);
     float maxSecondRectX = max(secondRectX, secondRectX+secondRectWidth);
@@ -81,65 +95,55 @@ public class PhysicsEngine
 
     if (maxFirstRectX >= minSecondRectX && minFirstRectX <= maxSecondRectX && maxFirstRectY >= minSecondRectY && minFirstRectY <= maxSecondRectY) 
     {
-      collision = true;
-    } else 
-    {
-      collision = false;
+      return true;
+    } 
+
+    return false;
+  }
+
+  boolean circleRect(float _circleX, float _circleY, float _radius, float _rectX, float _rectY, float _rectWidth, float _rectHeight) {
+
+    float testX = _circleX;
+    float testY = _circleY;
+
+    if (_circleX < _rectX)         testX = _rectX;      
+    else if (_circleX > _rectX+_rectWidth) testX = _rectX+_rectWidth;   
+    if (_circleY < _rectY)         testY = _rectY;     
+    else if (_circleY > _rectY+_rectHeight) testY = _rectY+_rectHeight;  
+
+    float distX = _circleX-testX;
+    float distY = _circleY-testY;
+    float distance = sqrt( (distX*distX) + (distY*distY) );
+
+
+    if (distance <= _radius) {
+      return true;
     }
-    println(collision);
+    return false;
   }
 
-boolean circleRect(float _circleX, float _circleY, float _radius, float _rectX, float _rectY, float _rectWidth, float _rectHeight) {
 
-  float testX = _circleX;
-  float testY = _circleY;
-
-  if (_circleX < _rectX)         testX = _rectX;      
-  else if (_circleX > _rectX+_rectWidth) testX = _rectX+_rectWidth;   
-  if (_circleY < _rectY)         testY = _rectY;     
-  else if (_circleY > _rectY+_rectHeight) testY = _rectY+_rectHeight;  
-
-  float distX = _circleX-testX;
-  float distY = _circleY-testY;
-  float distance = sqrt( (distX*distX) + (distY*distY) );
-
-
-  if (distance <= _radius) {
-    return true;
-  }
-  return false;
-}
-
-
-  void circleToCircleDetection()
+  boolean circleToCircleDetection(myCircle first, myCircle second)
   {
 
-    for (int i=0; i<objectArray.size(); i++)
+    float distX, distY;
+    distX = first.pos.x-second.pos.x;
+    distY = first.pos.y-second.pos.y;
+    float distance = sqrt((distX*distX) + (distY*distY));
+    if (distance<(first.radius + second.radius)/2)
     {
-      for (int j=i+1; j<objectArray.size(); j++)
-      {
-        
-        myCircle first = (myCircle)objectArray.get(i);
-        myCircle second = (myCircle)objectArray.get(j);
-        float distX, distY;
-        distX = first.pos.x-second.pos.x;
-        distY = first.pos.y-second.pos.y;
-        float distance = sqrt((distX*distX) + (distY*distY));
-        if (distance<(first.radius + second.radius)/2)
-        {
-          if (!first.gotHit || !second.gotHit) {
-            first.c = color(random(255), random(255), random(255));
-            second.c = color(random(255), random(255), random(255));
-            collision(first, second);
-            println("col");
-            first.gotHit =true;
-            second.gotHit =true;
-          }
-        } else {
-          first.gotHit = false;
-          second.gotHit = false;
-        }
+      if (!first.gotHit || !second.gotHit) {
+        first.c = color(random(255), random(255), random(255));
+        second.c = color(random(255), random(255), random(255));
+        println("col");
+        first.gotHit =true;
+        second.gotHit =true;
+        return true;
       }
+    } else {
+      first.gotHit = false;
+      second.gotHit = false;
     }
+    return false;
   }
 }
