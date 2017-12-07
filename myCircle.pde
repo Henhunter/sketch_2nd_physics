@@ -23,7 +23,6 @@ public class myCircle extends PhysicsObject{
     velocity.y = 1;
   }
 
-  color c = color(255, 255, 255);
   public void draw()
   {
     

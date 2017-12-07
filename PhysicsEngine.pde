@@ -2,35 +2,43 @@ public class PhysicsEngine
 {
   boolean collision;
   ArrayList<PhysicsObject> objectArray = new ArrayList<PhysicsObject>();
-
-  void borderCollision()
+ 
+  /*  void borderCollision()
+   {
+   for (int i = 0; i<objectArray.size(); i++)
+   {
+   PhysicsObject PO = objectArray.get(i);
+   myCircle circle = null;
+   if (PO instanceof myCircle) { 
+   circle = (myCircle)PO;
+   }  
+   if (circle.pos.x < circle.radius/2 || circle.pos.x > width-(circle.radius/2))
+   {
+   if (circle.gotHitX != true)
+   {
+   circle.velocity.x = -circle.velocity.x;
+   circle.gotHitX = true;
+   }
+   } else circle.gotHitX=false;
+   if (circle.pos.y < circle.radius/2 || circle.pos.y > height-(circle.radius/2))
+   {
+   if (circle.gotHitY != true) 
+   {
+   circle.velocity.y = -circle.velocity.y;
+   circle.gotHitY = true;
+   }
+   } else circle.gotHitY = false;
+   }
+   }
+   */
+  void collision(Rect hitFirst, Rect hitSecond)
   {
-    for (int i = 0; i<objectArray.size(); i++)
-    {
-      PhysicsObject PO = objectArray.get(i);
-      myCircle circle = null;
-      if (PO instanceof myCircle) { 
-        circle = (myCircle)PO;
-      }  
-      if (circle.pos.x < circle.radius/2 || circle.pos.x > width-(circle.radius/2))
-      {
-        if (circle.gotHitX != true)
-        {
-          circle.velocity.x = -circle.velocity.x;
-          circle.gotHitX = true;
-        }
-      } else circle.gotHitX=false;
-      if (circle.pos.y < circle.radius/2 || circle.pos.y > height-(circle.radius/2))
-      {
-        if (circle.gotHitY != true) 
-        {
-          circle.velocity.y = -circle.velocity.y;
-          circle.gotHitY = true;
-        }
-      } else circle.gotHitY = false;
-    }
+    if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
+    if (hitSecond.vanishOnImpact == true) objectArray.remove(hitSecond);
+    println(hitFirst.velocity + " " + hitSecond.velocity);
+    hitFirst.velocity = hitFirst.velocity.mult(-1);
+    hitSecond.velocity = hitSecond.velocity.mult(-1);
   }
-
 
   void collision(myCircle hitFirst, myCircle hitSecond)
   {
@@ -63,7 +71,7 @@ public class PhysicsEngine
   {
     PhysicsObject first;
     PhysicsObject second;
-    //    
+
     for (int i=0; i<objectArray.size(); i++)
     {
       for (int j=i+1; j<objectArray.size(); j++)
@@ -75,23 +83,31 @@ public class PhysicsEngine
           if (circleToCircleDetection((myCircle)first, (myCircle)second))
             collision((myCircle)first, (myCircle)second);
         }
+        if (first instanceof Rect && second instanceof Rect)
+        {
+          if (rectToRectDetection((Rect)first, (Rect)second))
+            { 
+              collision((Rect)first, (Rect)second);
+              first.c = color(random(255), random(255), random(255));
+              second.c = color(random(255), random(255), random(255));
+            }
+        }
+        /* if (instanceof physicsobject == circle && instanceof physicsobject2 == rect || instanceof physicsobject == rect && instanceof physicsobject2 == circle) 
+     circleToRectDetection();     */
       }
     }
-    /*    if (instanceof physicsobject == rect && instanceof physicsobject2 == rect) 
-     rectToRectDetection();
-     if (instanceof physicsobject == circle && instanceof physicsobject2 == rect || instanceof physicsobject == rect && instanceof physicsobject2 == circle) 
-     circleToRectDetection();     */
+    
   }
 
-  boolean rectToRectDetection(float firstRectX, float firstRectWidth, float secondRectX, float secondRectWidth, float firstRectY, float firstRectHeight, float secondRectY, float secondRectHeight) {
-    float maxFirstRectX = max(firstRectX, firstRectX+firstRectWidth);
-    float minFirstRectX = min(firstRectX, firstRectX+firstRectWidth);
-    float maxSecondRectX = max(secondRectX, secondRectX+secondRectWidth);
-    float minSecondRectX = min(secondRectX, secondRectX+secondRectWidth);
-    float maxFirstRectY = max(firstRectY, firstRectY+firstRectHeight);
-    float minFirstRectY = min(firstRectY, firstRectY+firstRectHeight);
-    float maxSecondRectY = max(secondRectY, secondRectY+secondRectHeight);
-    float minSecondRectY = min(secondRectY, secondRectY+secondRectHeight);
+  boolean rectToRectDetection(Rect _first, Rect _second) {
+    float maxFirstRectX = max(_first.pos.x, _first.pos.x+_first.w);
+    float minFirstRectX = min(_first.pos.x, _first.pos.x+_first.w);
+    float maxSecondRectX = max(_second.pos.x, _second.pos.x+_second.w);
+    float minSecondRectX = min(_second.pos.x, _second.pos.x+_second.w);
+    float maxFirstRectY = max(_first.pos.y, _first.pos.y+_first.h);
+    float minFirstRectY = min(_first.pos.y, _first.pos.y+_first.h);
+    float maxSecondRectY = max(_second.pos.y, _second.pos.y+_second.h);
+    float minSecondRectY = min(_second.pos.y, _second.pos.y+_second.h);
 
     if (maxFirstRectX >= minSecondRectX && minFirstRectX <= maxSecondRectX && maxFirstRectY >= minSecondRectY && minFirstRectY <= maxSecondRectY) 
     {
