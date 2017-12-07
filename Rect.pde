@@ -11,6 +11,7 @@ public Rect(float posX, float posY, float w, float h, float xVelocity, float yVe
   this.h = h;
   velocity.x=xVelocity;
   velocity.y=yVelocity;
+  mass=w*h;
 }
 
 void draw(){

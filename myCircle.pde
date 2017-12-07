@@ -12,6 +12,7 @@ public class myCircle extends PhysicsObject{
     this.radius = radius;
     velocity.x = xVelocity;
     velocity.y = yVelocity;
+    mass=PI*(radius*radius);
   }
 
   public myCircle(int posX, int posY, int radius)
