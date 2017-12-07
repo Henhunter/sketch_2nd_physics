@@ -1,13 +1,17 @@
 public class PhysicsEngine
 {
-
-  ArrayList<myCircle> circleArray = new ArrayList<myCircle>();
+  boolean collision;
+  ArrayList<PhysicsObject> objectArray = new ArrayList<PhysicsObject>();
 
   void borderCollision()
   {
-    for (int i = 0; i<circleArray.size(); i++)
+    for (int i = 0; i<objectArray.size(); i++)
     {
-      myCircle circle = circleArray.get(i); 
+      PhysicsObject PO = objectArray.get(i);
+      myCircle circle = null;
+      if (PO instanceof myCircle) { 
+        circle = (myCircle)PO;
+      }  
       if (circle.pos.x < circle.radius/2 || circle.pos.x > width-(circle.radius/2))
       {
         if (circle.gotHitX != true)
@@ -27,10 +31,11 @@ public class PhysicsEngine
     }
   }
 
+
   void collision(myCircle hitFirst, myCircle hitSecond)
   {
-    if (hitFirst.vanishOnImpact == true) circleArray.remove(hitFirst);
-    if (hitSecond.vanishOnImpact == true) circleArray.remove(hitSecond);
+    if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
+    if (hitSecond.vanishOnImpact == true) objectArray.remove(hitSecond);
     println(hitFirst.velocity + " " + hitSecond.velocity);
     float newV1X=0, newV1Y=0;
     float newV2X=0, newV2Y=0;
@@ -56,15 +61,71 @@ public class PhysicsEngine
 
   void collisionDetection()
   {
+       if (instanceof PhysicsObject == myCircle && instanceof physicsobject2 == circle) 
+    circleToCircleDetection();
+    /*    if (instanceof physicsobject == rect && instanceof physicsobject2 == rect) 
+     rectToRectDetection();
+     if (instanceof physicsobject == circle && instanceof physicsobject2 == rect || instanceof physicsobject == rect && instanceof physicsobject2 == circle) 
+     circleToRectDetection();     */
+  }
 
-    for (int i=0; i<circleArray.size(); i++)
+  void rectToRectDetection(float firstRectX, float firstRectWidth, float secondRectX, float secondRectWidth, float firstRectY, float firstRectHeight, float secondRectY, float secondRectHeight) {
+    float maxFirstRectX = max(firstRectX, firstRectX+firstRectWidth);
+    float minFirstRectX = min(firstRectX, firstRectX+firstRectWidth);
+    float maxSecondRectX = max(secondRectX, secondRectX+secondRectWidth);
+    float minSecondRectX = min(secondRectX, secondRectX+secondRectWidth);
+    float maxFirstRectY = max(firstRectY, firstRectY+firstRectHeight);
+    float minFirstRectY = min(firstRectY, firstRectY+firstRectHeight);
+    float maxSecondRectY = max(secondRectY, secondRectY+secondRectHeight);
+    float minSecondRectY = min(secondRectY, secondRectY+secondRectHeight);
+
+    if (maxFirstRectX >= minSecondRectX && minFirstRectX <= maxSecondRectX && maxFirstRectY >= minSecondRectY && minFirstRectY <= maxSecondRectY) 
     {
-      for (int j=i+1; j<circleArray.size(); j++)
-      {
-        myCircle first = circleArray.get(i);
-        myCircle second = circleArray.get(j);
+      collision = true;
+    } else 
+    {
+      collision = false;
+    }
+    println(collision);
+  }
 
-        if (dist(first.pos.x, first.pos.y, second.pos.x, second.pos.y)<(first.radius + second.radius)/2)
+boolean circleRect(float _circleX, float _circleY, float _radius, float _rectX, float _rectY, float _rectWidth, float _rectHeight) {
+
+  float testX = _circleX;
+  float testY = _circleY;
+
+  if (_circleX < _rectX)         testX = _rectX;      
+  else if (_circleX > _rectX+_rectWidth) testX = _rectX+_rectWidth;   
+  if (_circleY < _rectY)         testY = _rectY;     
+  else if (_circleY > _rectY+_rectHeight) testY = _rectY+_rectHeight;  
+
+  float distX = _circleX-testX;
+  float distY = _circleY-testY;
+  float distance = sqrt( (distX*distX) + (distY*distY) );
+
+
+  if (distance <= _radius) {
+    return true;
+  }
+  return false;
+}
+
+
+  void circleToCircleDetection()
+  {
+
+    for (int i=0; i<objectArray.size(); i++)
+    {
+      for (int j=i+1; j<objectArray.size(); j++)
+      {
+        
+        myCircle first = (myCircle)objectArray.get(i);
+        myCircle second = (myCircle)objectArray.get(j);
+        float distX, distY;
+        distX = first.pos.x-second.pos.x;
+        distY = first.pos.y-second.pos.y;
+        float distance = sqrt((distX*distX) + (distY*distY));
+        if (distance<(first.radius + second.radius)/2)
         {
           if (!first.gotHit || !second.gotHit) {
             first.c = color(random(255), random(255), random(255));

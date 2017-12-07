@@ -1,16 +1,12 @@
-public class myCircle {
-  public PVector pos = new PVector();
+public class myCircle extends PhysicsObject{
   float radius;
-  PVector velocity = new PVector();
-  boolean vanishOnImpact = false;
-  boolean bounceOnImpact = true;
-  boolean constrainedInFrame = true;
   boolean gotHitX;
   boolean gotHitY;
   boolean gotHit;
-
+  boolean player;
   public myCircle(float posX, float posY, float radius, float xVelocity, float yVelocity)
   {
+    if(posX == mouseX) player=true;
     pos.x = posX;
     pos.y= posY;
     this.radius = radius;
@@ -28,11 +24,11 @@ public class myCircle {
   }
 
   color c = color(255, 255, 255);
-  public void drawIt()
+  public void draw()
   {
-    pos = pos.add(velocity);
-
+    
     fill(c);
+    //if(player) { pos.x = mouseX; pos.y = mouseY;  }
     ellipse(pos.x, pos.y, radius, radius);
     fill(255);
   }
