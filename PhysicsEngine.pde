@@ -3,7 +3,7 @@ public class PhysicsEngine
   boolean collision;
   ArrayList<PhysicsObject> objectArray = new ArrayList<PhysicsObject>();
  
-  /*  void borderCollision()
+    void borderCollision()
    {
    for (int i = 0; i<objectArray.size(); i++)
    {
@@ -30,7 +30,7 @@ public class PhysicsEngine
    } else circle.gotHitY = false;
    }
    }
-   */
+   
   void collision(Rect hitFirst, Rect hitSecond)
   {
     if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
@@ -49,14 +49,14 @@ public class PhysicsEngine
     float newV2X=0, newV2Y=0;
     if (hitFirst.bounceOnImpact == true)
     {
-      newV1X = (hitFirst.velocity.x * (hitFirst.radius - hitSecond.radius)+(2* hitSecond.radius * hitSecond.velocity.x))/(hitSecond.radius+hitFirst.radius);
-      newV1Y = (hitFirst.velocity.y * (hitFirst.radius - hitSecond.radius)+(2* hitSecond.radius * hitSecond.velocity.y))/(hitSecond.radius+hitFirst.radius);
+      newV1X = (hitFirst.velocity.x * (hitFirst.mass - hitSecond.mass)+(2* hitSecond.mass * hitSecond.velocity.x))/(hitSecond.mass+hitFirst.mass);
+      newV1Y = (hitFirst.velocity.y * (hitFirst.mass - hitSecond.mass)+(2* hitSecond.mass * hitSecond.velocity.y))/(hitSecond.mass+hitFirst.mass);
     }
     println(hitFirst.velocity + " " + hitSecond.velocity);
     if (hitSecond.bounceOnImpact == true)
     {
-      newV2X = (hitSecond.velocity.x * (hitSecond.radius - hitFirst.radius)+(2.0f* hitFirst.radius * hitFirst.velocity.x))/(hitFirst.radius+hitSecond.radius);
-      newV2Y = (hitSecond.velocity.y * (hitSecond.radius - hitFirst.radius)+(2.0f* hitFirst.radius * hitFirst.velocity.y))/(hitFirst.radius+hitSecond.radius);
+      newV2X = (hitSecond.velocity.x * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.x))/(hitFirst.mass+hitSecond.mass);
+      newV2Y = (hitSecond.velocity.y * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.y))/(hitFirst.mass+hitSecond.mass);
       //hitSecond.velocity = hitSecond.velocity.add(hitFirst.velocity);
     }
     hitSecond.velocity.x =  newV2X;
