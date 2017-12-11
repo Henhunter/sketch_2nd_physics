@@ -9,7 +9,7 @@ public class myCircle extends PhysicsObject{
     if(posX == mouseX) player=true;
     pos.x = posX;
     pos.y= posY;
-    this.radius = radius;
+    this.radius = radius/2;
     velocity.x = xVelocity;
     velocity.y = yVelocity;
     mass=PI*(radius*radius);
@@ -19,7 +19,7 @@ public class myCircle extends PhysicsObject{
   {
     pos.x = posX;
     pos.y = posY;
-    this.radius = radius;
+    this.radius = radius/2;
     velocity.x = 1;
     velocity.y = 1;
   }
