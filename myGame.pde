@@ -65,12 +65,12 @@ public class Pong {
     background(255);
 
     p.moveObject();
-    c.moveObject();
+    if (gameStart)
+      c.moveObject();
     PE.collisionDetection();
     PE.borderCollision();
     p.draw();
     c.draw();
-    
   }
 }
 void mousePressed() {
