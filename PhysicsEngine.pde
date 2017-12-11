@@ -23,19 +23,35 @@ public class PhysicsEngine
 
     myCircle circle = (myCircle)PO;
 
-    if (circle.pos.x < circle.radius/2 || circle.pos.x > width-(circle.radius/2))
+    if (circle.pos.x <= circle.radius/2)
     {
       if (circle.gotHitX != true)
       {
-        circle.velocity.x = -circle.velocity.x;
+        circle.velocity.x = Math.abs(circle.velocity.x);
         circle.gotHitX = true;
       }
-    } else circle.gotHitX=false;
-    if (circle.pos.y < circle.radius/2 || circle.pos.y > height-(circle.radius/2))
+    } else if(circle.pos.x >= width-(circle.radius/2))
+    {
+         if (circle.gotHitX != true)
+      {
+        circle.velocity.x = -Math.abs(circle.velocity.x);
+        circle.gotHitX = true;
+      }
+    
+    }
+    
+    else circle.gotHitX=false;
+    if (circle.pos.y <= circle.radius/2)
     {
       if (circle.gotHitY != true) 
       {
-        circle.velocity.y = -circle.velocity.y;
+        circle.velocity.y = Math.abs(circle.velocity.y);
+        circle.gotHitY = true;
+      }
+    } else if (circle.pos.y >= height-(circle.radius/2)) {
+      if (circle.gotHitY != true) 
+      {
+        circle.velocity.y = -Math.abs(circle.velocity.y);
         circle.gotHitY = true;
       }
     } else circle.gotHitY = false;
@@ -48,19 +64,32 @@ public class PhysicsEngine
 
     Rect rect = (Rect)PO;
 
-    if (rect.pos.x < 0 || rect.pos.x > width-(rect.w))
+    if (rect.pos.x <= 0 )
     {
       if (rect.gotHitX != true)
       {
-        rect.velocity.x = -rect.velocity.x;
+        rect.velocity.x = Math.abs(rect.velocity.x);
         rect.gotHitX = true;
       }
-    } else rect.gotHitX=false;
-    if ( rect.pos.y < 0 || rect.pos.y > height-(rect.h))
+    }else if(rect.pos.x >= width-(rect.w)){
+       if (rect.gotHitX != true)
+      {
+        rect.velocity.x = -Math.abs(rect.velocity.x);
+        rect.gotHitX = true;
+      }
+    }
+      else rect.gotHitX=false;
+    if ( rect.pos.y <= 0 )
     {
       if (rect.gotHitY != true) 
       {
-        rect.velocity.y = -rect.velocity.y;
+        rect.velocity.y = Math.abs(rect.velocity.y);
+        rect.gotHitY = true;
+      }
+    } else if (rect.pos.y >= height-(rect.h)) {
+      if (rect.gotHitY != true) 
+      {
+        rect.velocity.y = -Math.abs(rect.velocity.y);
         rect.gotHitY = true;
       }
     } else rect.gotHitY = false;

@@ -28,7 +28,7 @@ public class myCircle extends PhysicsObject{
   {
     
     fill(c);
-    //if(player) { pos.x = mouseX; pos.y = mouseY;  }
+    
     ellipse(pos.x, pos.y, radius, radius);
     fill(255);
   }
