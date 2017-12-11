@@ -6,6 +6,9 @@ public class Rect extends PhysicsObject {
   boolean gotHitY;
   boolean gotHit;
 
+  public Rect() {
+  }
+
   public Rect(float posX, float posY, float w, float h, float xVelocity, float yVelocity)
   {
     pos.x = posX;
