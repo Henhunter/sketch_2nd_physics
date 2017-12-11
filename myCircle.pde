@@ -1,4 +1,4 @@
-public class myCircle extends PhysicsObject{
+public class myCircle extends PhysicsObject {
   float radius;
   boolean gotHitX;
   boolean gotHitY;
@@ -6,7 +6,7 @@ public class myCircle extends PhysicsObject{
   boolean player;
   public myCircle(float posX, float posY, float radius, float xVelocity, float yVelocity)
   {
-    if(posX == mouseX) player=true;
+    if (posX == mouseX) player=true;
     pos.x = posX;
     pos.y= posY;
     this.radius = radius/2;
@@ -15,7 +15,7 @@ public class myCircle extends PhysicsObject{
     mass=PI*(radius*radius);
   }
 
-  public myCircle(int posX, int posY, int radius)
+  public myCircle(float posX, float posY, float radius)
   {
     pos.x = posX;
     pos.y = posY;
@@ -26,9 +26,9 @@ public class myCircle extends PhysicsObject{
 
   public void draw()
   {
-    
+
     fill(c);
-    
+
     ellipse(pos.x, pos.y, radius, radius);
     fill(255);
   }

@@ -23,7 +23,10 @@ public class Rect extends PhysicsObject {
   void draw() {
 
     fill(c);
-    if(mouseUse) { pos.x = mouseX; pos.y = mouseY;  }
+    if (mouseUse) { 
+      pos.x = mouseX; 
+      pos.y = mouseY;
+    }
     rect(pos.x, pos.y, w, h);
     fill(255);
   }

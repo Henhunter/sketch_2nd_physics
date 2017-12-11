@@ -16,7 +16,9 @@ public class PhysicsEngine
     }
   }
 
-
+  void add(PhysicsObject PO) {
+    objectArray.add(PO);
+  }
   void borderCollisionCircle(PhysicsObject PO)
   {
 
@@ -30,17 +32,14 @@ public class PhysicsEngine
         circle.velocity.x = Math.abs(circle.velocity.x);
         circle.gotHitX = true;
       }
-    } else if(circle.pos.x >= width-(circle.radius/2))
+    } else if (circle.pos.x >= width-(circle.radius/2))
     {
-         if (circle.gotHitX != true)
+      if (circle.gotHitX != true)
       {
         circle.velocity.x = -Math.abs(circle.velocity.x);
         circle.gotHitX = true;
       }
-    
-    }
-    
-    else circle.gotHitX=false;
+    } else circle.gotHitX=false;
     if (circle.pos.y <= circle.radius/2)
     {
       if (circle.gotHitY != true) 
@@ -71,14 +70,13 @@ public class PhysicsEngine
         rect.velocity.x = Math.abs(rect.velocity.x);
         rect.gotHitX = true;
       }
-    }else if(rect.pos.x >= width-(rect.w)){
-       if (rect.gotHitX != true)
+    } else if (rect.pos.x >= width-(rect.w)) {
+      if (rect.gotHitX != true)
       {
         rect.velocity.x = -Math.abs(rect.velocity.x);
         rect.gotHitX = true;
       }
-    }
-      else rect.gotHitX=false;
+    } else rect.gotHitX=false;
     if ( rect.pos.y <= 0 )
     {
       if (rect.gotHitY != true) 
@@ -98,44 +96,7 @@ public class PhysicsEngine
 
 
 
-  // OLD COL
-  /* void collision(Rect hitFirst, Rect hitSecond)
-   {
-   if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
-   if (hitSecond.vanishOnImpact == true) objectArray.remove(hitSecond);
-   println(hitFirst.velocity + " " + hitSecond.velocity);
-   hitFirst.velocity = hitFirst.velocity.mult(-1);
-   hitSecond.velocity = hitSecond.velocity.mult(-1);
-   }*/
-
-  /*
-  void collision(Rect hitFirst, Rect hitSecond)
-   {
-   if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
-   if (hitSecond.vanishOnImpact == true) objectArray.remove(hitSecond);
-   println(hitFirst.velocity + " " + hitSecond.velocity);
-   
-   float newV1X=0, newV1Y=0;
-   float newV2X=0, newV2Y=0;
-   if (hitFirst.bounceOnImpact == true)
-   {
-   newV1X = (hitFirst.velocity.x * (hitFirst.mass - hitSecond.mass)+(2* hitSecond.mass * hitSecond.velocity.x))/(hitSecond.mass+hitFirst.mass);
-   newV1Y = (hitFirst.velocity.y * (hitFirst.mass - hitSecond.mass)+(2* hitSecond.mass * hitSecond.velocity.y))/(hitSecond.mass+hitFirst.mass);
-   }
-   if (hitSecond.bounceOnImpact == true)
-   {
-   newV2X = (hitSecond.velocity.x * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.x))/(hitFirst.mass+hitSecond.mass);
-   newV2Y = (hitSecond.velocity.y * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.y))/(hitFirst.mass+hitSecond.mass);
-   //hitSecond.velocity = hitSecond.velocity.add(hitFirst.velocity);
-   }
-   hitSecond.velocity.x =  newV2X;
-   hitSecond.velocity.y =  newV2Y;
-   hitFirst.velocity.x = newV1X;
-   hitFirst.velocity.y = newV1Y;
-   
-   println(hitFirst.velocity + " " + hitSecond.velocity);
-   }
-   */
+ 
   void collision(PhysicsObject hitFirst, PhysicsObject hitSecond)
   {
     if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
@@ -159,38 +120,16 @@ public class PhysicsEngine
     hitFirst.velocity.y = newV1Y;
     hitSecond.velocity.x =  newV2X;
     hitSecond.velocity.y =  newV2Y;
-
-
-    println(hitFirst.velocity + " " + hitSecond.velocity);
+    if (hitFirst.keepXConstant) {
+      hitSecond.velocity.x = hitSecond.velocity.x-newV1X;
+      
+    }
+    if (hitSecond.keepXConstant) {
+      hitFirst.velocity.x = hitFirst.velocity.x-newV2X;
+     
+    }
   }
-  /*
-  void collision(myCircle hitFirst, myCircle hitSecond)
-   {
-   if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
-   if (hitSecond.vanishOnImpact == true) objectArray.remove(hitSecond);
-   println(hitFirst.velocity + " " + hitSecond.velocity);
-   float newV1X=0, newV1Y=0;
-   float newV2X=0, newV2Y=0;
-   if (hitFirst.bounceOnImpact == true)
-   {
-   newV1X = (hitFirst.velocity.x * (hitFirst.mass - hitSecond.mass)+(2* hitSecond.mass * hitSecond.velocity.x))/(hitSecond.mass+hitFirst.mass);
-   newV1Y = (hitFirst.velocity.y * (hitFirst.mass - hitSecond.mass)+(2* hitSecond.mass * hitSecond.velocity.y))/(hitSecond.mass+hitFirst.mass);
-   }
-   println(hitFirst.velocity + " " + hitSecond.velocity);
-   if (hitSecond.bounceOnImpact == true)
-   {
-   newV2X = (hitSecond.velocity.x * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.x))/(hitFirst.mass+hitSecond.mass);
-   newV2Y = (hitSecond.velocity.y * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.y))/(hitFirst.mass+hitSecond.mass);
-   //hitSecond.velocity = hitSecond.velocity.add(hitFirst.velocity);
-   }
-   hitFirst.velocity.x = newV1X;
-   hitFirst.velocity.y = newV1Y;
-   hitSecond.velocity.x =  newV2X;
-   hitSecond.velocity.y =  newV2Y;
-   
-   
-   println(hitFirst.velocity + " " + hitSecond.velocity);
-   }*/
+ 
 
 
   void collisionDetection()

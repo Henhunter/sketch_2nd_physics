@@ -1,9 +1,9 @@
-myGame game;
+Pong game;
 
 void setup()
 {
   size(800, 600);
-  game = new myGame();
+  game = new Pong();
 }
 
 void draw()

@@ -9,26 +9,33 @@ class PhysicsObject {
   float oldMouseX;
   float oldMouseY;
   boolean mouseUse = false;
+  boolean keepXConstant = false;
   void moveObject()
   {
-    if(mouseUse)
-    {
-      updateVelocity(new PVector(mouseX-oldMouseX, mouseY-oldMouseY));
-      oldMouseX=mouseX;
-      oldMouseY=mouseY;
-      pos.x = mouseX; pos.y = mouseY;
-    }
-    pos = pos.add(velocity);
+    if (mouseUse)
+      mouseUpdate();
+    else
+      pos = pos.add(velocity);
   }
-  
-  void updateVelocity(PVector velocity){
+
+  void updateVelocity(PVector velocity) {
     this.velocity = velocity;
   }
+
+  void addVelocity(PVector velocity) {
+    this.velocity = this.velocity.add(velocity);
+  }
+
   void mouseUpdate()
   {
-      
+    updateVelocity(new PVector(mouseX-oldMouseX, mouseY-oldMouseY));
+    oldMouseX=mouseX;
+    oldMouseY=mouseY;
+    if (!keepXConstant)
+      pos.x = mouseX;
+    pos.y = mouseY;
   }
-  
+
   void draw()
   {
   }
