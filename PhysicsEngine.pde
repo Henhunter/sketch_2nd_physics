@@ -32,14 +32,14 @@ public class PhysicsEngine
   {
     myCircle circle = (myCircle)PO;
 
-    if (circle.pos.x <= circle.radius/2)
+    if (circle.pos.x <= circle.radius)
     {
       if (circle.gotHitX != true)
       {
         circle.velocity.x = Math.abs(circle.velocity.x); //math.abs will make any number positive
         circle.gotHitX = true;
       }
-    } else if (circle.pos.x >= width-(circle.radius/2))
+    } else if (circle.pos.x >= width-(circle.radius))
     {
       if (circle.gotHitX != true)
       {
@@ -47,14 +47,14 @@ public class PhysicsEngine
         circle.gotHitX = true;
       }
     } else circle.gotHitX=false;
-    if (circle.pos.y <= circle.radius/2)
+    if (circle.pos.y <= circle.radius)
     {
       if (circle.gotHitY != true) 
       {
         circle.velocity.y = Math.abs(circle.velocity.y);
         circle.gotHitY = true;
       }
-    } else if (circle.pos.y >= height-(circle.radius/2)) {
+    } else if (circle.pos.y >= height-(circle.radius)) {
       if (circle.gotHitY != true) 
       {
         circle.velocity.y = -Math.abs(circle.velocity.y);
@@ -238,10 +238,12 @@ public class PhysicsEngine
     }
     //then checks if the circle and rectangle are so close that a fast return true can be made.
     if (distX <= (rect.w/2)) {
+      if (circle.gotHitBy==rect || rect.gotHitBy == circle)  return false;
       trueGotHit(circle, rect);
       return true;
     } 
     if (distY <= (rect.h/2)) {
+      if (circle.gotHitBy==rect || rect.gotHitBy == circle)  return false;
       trueGotHit(circle, rect);
       return true;
     }
@@ -251,6 +253,7 @@ public class PhysicsEngine
     boolean col = ((dx*dx+dy*dy)<(circle.radius*circle.radius)); 
     if (col)
     {
+      if (circle.gotHitBy==rect || rect.gotHitBy == circle)  return false;
       trueGotHit(circle, rect);
       return true;
     } else

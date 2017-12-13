@@ -6,9 +6,9 @@ public class myGame extends PhysicsEngine
     {
       float size = random(20, 50);
 
-      objectArray.add(new myCircle(random(size+1, width-1)-size/2, random(size+1, height-1)-size/2, size, random(-50, 50), random(-50, 50)));
+      objectArray.add(new myCircle(random(size+1, width-1)-size/2, random(size+1, height-1)-size/2, size, random(-5, 5), random(-5, 5)));
       size = random(20, 50);
-      objectArray.add(new Rect(random(0+1, width-size-1), random(0+1, height-size-1), size, size, random(-50, 50), random(-50, 50)));
+      objectArray.add(new Rect(random(0+1, width-size-1), random(0+1, height-size-1), size, size, random(-5, 5), random(-5, 5)));
     }
     //objectArray.add(new Player(random(0+1, width-20-1), random(0+1, height-20-1), 20, 20, random(-5, 5), random(-5, 5)));
     //objectArray.add(new myCircle(mouseX, mouseY, 50,0,0));
