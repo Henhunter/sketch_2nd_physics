@@ -3,7 +3,7 @@ public class myCircle extends PhysicsObject {
   float radius;
   boolean gotHitX;
   boolean gotHitY;
-
+  
   boolean player;
 
   //needed parameters for a circle velocity are here given a standard velocity of 1.

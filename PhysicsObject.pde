@@ -14,7 +14,8 @@ class PhysicsObject {
   float oldMouseY;
   boolean mouseUse = false;
   boolean keepXConstant = false;
-  boolean gotHit;
+  boolean gotHit = true;
+  PhysicsObject gotHitBy;
  
    //moves the object after calculations
   void moveObject()

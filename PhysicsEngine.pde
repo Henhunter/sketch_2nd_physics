@@ -1,4 +1,4 @@
-
+ //<>// //<>//
 
 //the core class that takes care of all interactions between PhysicsObjects
 public class PhysicsEngine
@@ -175,24 +175,27 @@ public class PhysicsEngine
 
 
   //checks if rectangles collides
-  boolean rectToRectDetection(Rect _first, Rect _second) {
+  boolean rectToRectDetection(Rect first, Rect second) {
 
-    float maxFirstRectX = max(_first.pos.x, _first.pos.x+_first.w);
-    float minFirstRectX = min(_first.pos.x, _first.pos.x+_first.w);
-    float maxSecondRectX = max(_second.pos.x, _second.pos.x+_second.w);
-    float minSecondRectX = min(_second.pos.x, _second.pos.x+_second.w);
-    float maxFirstRectY = max(_first.pos.y, _first.pos.y+_first.h);
-    float minFirstRectY = min(_first.pos.y, _first.pos.y+_first.h);
-    float maxSecondRectY = max(_second.pos.y, _second.pos.y+_second.h);
-    float minSecondRectY = min(_second.pos.y, _second.pos.y+_second.h);
+    float maxFirstRectX = max(first.pos.x, first.pos.x+first.w);
+    float minFirstRectX = min(first.pos.x, first.pos.x+first.w);
+    float maxSecondRectX = max(second.pos.x, second.pos.x+second.w);
+    float minSecondRectX = min(second.pos.x, second.pos.x+second.w);
+    float maxFirstRectY = max(first.pos.y, first.pos.y+first.h);
+    float minFirstRectY = min(first.pos.y, first.pos.y+first.h);
+    float maxSecondRectY = max(second.pos.y, second.pos.y+second.h);
+    float minSecondRectY = min(second.pos.y, second.pos.y+second.h);
 
     if (maxFirstRectX >= minSecondRectX && minFirstRectX <= maxSecondRectX && maxFirstRectY >= minSecondRectY && minFirstRectY <= maxSecondRectY) 
     {
-      if (_first.gotHit || _second.gotHit) return false;
-      trueGotHit(_first, _second);
+      if (first.gotHitBy==second || second.gotHitBy == first) 
+        return false;
+      trueGotHit(first, second);
       return true;
-    } 
-    falseGotHit(_first, _second);
+    } else {
+      if (first.gotHitBy==second || second.gotHitBy == first)
+        falseGotHit(first, second);
+    }
     return false;
   }
 
@@ -205,14 +208,15 @@ public class PhysicsEngine
     float distance = sqrt((distX*distX) + (distY*distY));
     if (distance<(first.radius + second.radius))
     {
-      if (first.gotHit || second.gotHit) return false;
+      if (first.gotHitBy==second || second.gotHitBy == first)  return false;
       first.c = color(random(255), random(255), random(255));
       second.c = color(random(255), random(255), random(255));
       println("col");
       trueGotHit(first, second);
       return true;
     } else {
-      falseGotHit(first, second);
+      if (first.gotHitBy==second || second.gotHitBy == first)
+        falseGotHit(first, second);
     }
     return false;
   }
@@ -223,11 +227,13 @@ public class PhysicsEngine
     float distY = Math.abs(circle.pos.y - rect.pos.y-rect.h/2);
     //first checks if the circle and rectangle are so far away that a fast return false can be made.
     if (distX > (rect.w/2 + circle.radius)) {
-      falseGotHit(circle, rect);
+      if (circle.gotHitBy==rect || rect.gotHitBy == circle)
+        falseGotHit(circle, rect);
       return false;
     }
     if (distY > (rect.h/2 + circle.radius)) {
-      falseGotHit(circle, rect);
+     if (circle.gotHitBy==rect || rect.gotHitBy == circle)
+        falseGotHit(circle, rect);
       return false;
     }
     //then checks if the circle and rectangle are so close that a fast return true can be made.
@@ -249,7 +255,8 @@ public class PhysicsEngine
       return true;
     } else
     {
-      falseGotHit(circle, rect);
+     if (circle.gotHitBy==rect || rect.gotHitBy == circle)
+        falseGotHit(circle, rect);
       return false;
     }
   }
@@ -257,12 +264,12 @@ public class PhysicsEngine
   //Because this behaviour happens often, these methods were made.
   void falseGotHit(PhysicsObject first, PhysicsObject second)
   {
-    first.gotHit =false;
-    second.gotHit = false;
+    first.gotHitBy =null;
+    second.gotHitBy = null;
   }
   void trueGotHit(PhysicsObject first, PhysicsObject second)
   {
-    first.gotHit =true;
-    second.gotHit = true;
+    first.gotHitBy = second;
+    second.gotHitBy = first;
   }
 }
