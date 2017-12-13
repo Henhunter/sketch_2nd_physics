@@ -1,8 +1,17 @@
+
+
+
 public class PhysicsEngine
 {
   boolean collision;
   ArrayList<PhysicsObject> objectArray = new ArrayList<PhysicsObject>();
-
+  Border Border;
+  /*
+  void openBorder(Border border){
+   switch
+   
+   }
+   */
 
   void borderCollision()
   {
@@ -18,6 +27,9 @@ public class PhysicsEngine
 
   void add(PhysicsObject PO) {
     objectArray.add(PO);
+  }
+  void remove(PhysicsObject PO) {
+    objectArray.remove(PO);
   }
   void borderCollisionCircle(PhysicsObject PO)
   {
@@ -96,7 +108,7 @@ public class PhysicsEngine
 
 
 
- 
+
   void collision(PhysicsObject hitFirst, PhysicsObject hitSecond)
   {
     if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
@@ -116,20 +128,22 @@ public class PhysicsEngine
       newV2Y = (hitSecond.velocity.y * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.y))/(hitFirst.mass+hitSecond.mass);
       //hitSecond.velocity = hitSecond.velocity.add(hitFirst.velocity);
     }
-    hitFirst.velocity.x = newV1X;
-    hitFirst.velocity.y = newV1Y;
-    hitSecond.velocity.x =  newV2X;
-    hitSecond.velocity.y =  newV2Y;
-    if (hitFirst.keepXConstant) {
-      hitSecond.velocity.x = hitSecond.velocity.x-newV1X;
-      
-    }
-    if (hitSecond.keepXConstant) {
-      hitFirst.velocity.x = hitFirst.velocity.x-newV2X;
-     
-    }
+    if (!hitSecond.keepXConstant) 
+      hitFirst.velocity.x = newV1X;
+    else
+      hitFirst.velocity.x = - hitFirst.velocity.x;
+
+    if (!hitFirst.keepXConstant)
+      hitSecond.velocity.x =  newV2X;
+    else
+      hitSecond.velocity.x = -hitSecond.velocity.x;
+    if (!hitFirst.keepXConstant || hitFirst.velocity.y < 0.2)
+      hitSecond.velocity.y =  newV2Y;
+
+    if (!hitSecond.keepXConstant|| hitSecond.velocity.y < 0.2)
+      hitFirst.velocity.y = newV1Y;
   }
- 
+
 
 
   void collisionDetection()
@@ -146,7 +160,9 @@ public class PhysicsEngine
         if (first instanceof myCircle && second instanceof myCircle)
         {
           if (circleToCircleDetection((myCircle)first, (myCircle)second))
+          {
             collision(first, second);
+          }
         }
         if (first instanceof Rect && second instanceof Rect)
         {
@@ -169,6 +185,7 @@ public class PhysicsEngine
   }
 
   boolean rectToRectDetection(Rect _first, Rect _second) {
+
     float maxFirstRectX = max(_first.pos.x, _first.pos.x+_first.w);
     float minFirstRectX = min(_first.pos.x, _first.pos.x+_first.w);
     float maxSecondRectX = max(_second.pos.x, _second.pos.x+_second.w);
@@ -180,9 +197,11 @@ public class PhysicsEngine
 
     if (maxFirstRectX >= minSecondRectX && minFirstRectX <= maxSecondRectX && maxFirstRectY >= minSecondRectY && minFirstRectY <= maxSecondRectY) 
     {
+      if (_first.gotHit || _second.gotHit) return false;
+      trueGotHit(_first, _second);
       return true;
     } 
-
+    falseGotHit(_first, _second);
     return false;
   }
 
@@ -202,6 +221,7 @@ public class PhysicsEngine
 
 
     if (distance <= _radius) {
+
       return true;
     }
     return false;
@@ -209,50 +229,69 @@ public class PhysicsEngine
 
 
   boolean circleToCircleDetection(myCircle first, myCircle second)
-  {
-
+  { 
     float distX, distY;
     distX = first.pos.x-second.pos.x;
     distY = first.pos.y-second.pos.y;
     float distance = sqrt((distX*distX) + (distY*distY));
     if (distance<(first.radius + second.radius)/2)
     {
-      if (!first.gotHit || !second.gotHit) {
-        first.c = color(random(255), random(255), random(255));
-        second.c = color(random(255), random(255), random(255));
-        println("col");
-        first.gotHit =true;
-        second.gotHit =true;
-        return true;
-      }
+      if (first.gotHit || second.gotHit) return false;
+      first.c = color(random(255), random(255), random(255));
+      second.c = color(random(255), random(255), random(255));
+      println("col");
+      first.gotHit =true;
+      second.gotHit =true;
+      return true;
     } else {
-      first.gotHit = false;
-      second.gotHit = false;
+      falseGotHit(first, second);
     }
     return false;
   }
   boolean CircleToRectDetection(myCircle circle, Rect rect) {
 
-
     float distX = Math.abs(circle.pos.x - rect.pos.x-rect.w/2);
     float distY = Math.abs(circle.pos.y - rect.pos.y-rect.h/2);
 
-    if (distX > (rect.w/2 + circle.radius)) { 
+    if (distX > (rect.w/2 + circle.radius)) {
+      falseGotHit(circle, rect);
       return false;
     }
-    if (distY > (rect.h/2 + circle.radius)) { 
+    if (distY > (rect.h/2 + circle.radius)) {
+      falseGotHit(circle, rect);
       return false;
     }
 
-    if (distX <= (rect.w/2)) { 
+    if (distX <= (rect.w/2)) {
+      trueGotHit(circle, rect);
       return true;
     } 
-    if (distY <= (rect.h/2)) { 
+    if (distY <= (rect.h/2)) {
+      trueGotHit(circle, rect);
       return true;
     }
 
     float dx=distX-rect.w/2;
     float dy=distY-rect.h/2;
-    return (dx*dx+dy*dy<=(circle.radius*circle.radius));
+    boolean col = (dx*dx+dy*dy<=(circle.radius*circle.radius)); 
+    if (col)
+    {
+      trueGotHit(circle, rect);
+      return true;
+    } else
+    {
+      falseGotHit(circle, rect);
+      return false;
+    }
+  }
+  void falseGotHit(PhysicsObject first, PhysicsObject second)
+  {
+    first.gotHit =false;
+    second.gotHit = false;
+  }
+  void trueGotHit(PhysicsObject first, PhysicsObject second)
+  {
+    first.gotHit =true;
+    second.gotHit = true;
   }
 }

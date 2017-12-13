@@ -4,7 +4,7 @@ public class Rect extends PhysicsObject {
   float h;
   boolean gotHitX;
   boolean gotHitY;
-  boolean gotHit;
+  
 
   public Rect() {
   }

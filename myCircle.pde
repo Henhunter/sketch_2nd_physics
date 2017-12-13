@@ -2,7 +2,7 @@ public class myCircle extends PhysicsObject {
   float radius;
   boolean gotHitX;
   boolean gotHitY;
-  boolean gotHit;
+
   boolean player;
   public myCircle(float posX, float posY, float radius, float xVelocity, float yVelocity)
   {
@@ -12,7 +12,7 @@ public class myCircle extends PhysicsObject {
     this.radius = radius/2;
     velocity.x = xVelocity;
     velocity.y = yVelocity;
-    mass=PI*(radius*radius);
+    mass=PI*(this.radius*this.radius);
   }
 
   public myCircle(float posX, float posY, float radius)

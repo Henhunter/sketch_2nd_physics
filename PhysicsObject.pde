@@ -1,3 +1,7 @@
+public enum Border{
+ LEFT,RIGHT,UP,DOWN 
+}
+
 class PhysicsObject {
   public PVector pos = new PVector();
   PVector velocity = new PVector();
@@ -10,6 +14,8 @@ class PhysicsObject {
   float oldMouseY;
   boolean mouseUse = false;
   boolean keepXConstant = false;
+  boolean gotHit;
+ 
   void moveObject()
   {
     if (mouseUse)
