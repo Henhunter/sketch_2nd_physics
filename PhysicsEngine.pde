@@ -12,7 +12,7 @@ public class PhysicsEngine
     for (int i = 0; i<objectArray.size(); i++)
     {
       PhysicsObject PO = objectArray.get(i);
-      if (PO instanceof myCircle)
+      if (PO instanceof Circle)
         borderCollisionCircle(PO);
       if (PO instanceof Rect)
         borderCollisionRect(PO);
@@ -30,7 +30,7 @@ public class PhysicsEngine
   //Bordercollision for circle, also makes sure that the object is going the right way after impact by forcing the right direction.  
   void borderCollisionCircle(PhysicsObject PO)
   {
-    myCircle circle = (myCircle)PO;
+    Circle circle = (Circle)PO;
 
     if (circle.pos.x <= circle.radius)
     {
@@ -110,9 +110,9 @@ public class PhysicsEngine
       {
         first = objectArray.get(i);
         second = objectArray.get(j);
-        if (first instanceof myCircle && second instanceof myCircle)
+        if (first instanceof Circle && second instanceof Circle)
         {
-          if (circleToCircleDetection((myCircle)first, (myCircle)second))
+          if (circleToCircleDetection((Circle)first, (Circle)second))
           {
             collisionResponse(first, second);
           }
@@ -126,11 +126,11 @@ public class PhysicsEngine
             second.c = color(random(255), random(255), random(255));
           }
         }
-        if (first instanceof myCircle && second instanceof Rect || first instanceof Rect && second instanceof myCircle)
+        if (first instanceof Circle && second instanceof Rect || first instanceof Rect && second instanceof Circle)
         {
-          if (first instanceof myCircle && CircleToRectDetection((myCircle)first, (Rect)second))
+          if (first instanceof Circle && CircleToRectDetection((Circle)first, (Rect)second))
             collisionResponse(first, second);
-          else if (first instanceof Rect && CircleToRectDetection((myCircle)second, (Rect)first))
+          else if (first instanceof Rect && CircleToRectDetection((Circle)second, (Rect)first))
             collisionResponse(second, first);
         }
       }
@@ -200,7 +200,7 @@ public class PhysicsEngine
   }
 
   //checks if circles collides
-  boolean circleToCircleDetection(myCircle first, myCircle second)
+  boolean circleToCircleDetection(Circle first, Circle second)
   { 
     float distX, distY;
     distX = first.pos.x-second.pos.x;
@@ -221,7 +221,7 @@ public class PhysicsEngine
     return false;
   }
   //checks if circles and rectangles collides
-  boolean CircleToRectDetection(myCircle circle, Rect rect) {
+  boolean CircleToRectDetection(Circle circle, Rect rect) {
 
     float distX = Math.abs(circle.pos.x - rect.pos.x-rect.w/2);
     float distY = Math.abs(circle.pos.y - rect.pos.y-rect.h/2);

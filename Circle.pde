@@ -1,5 +1,5 @@
 //this class represents circle physicsobjects, can be used on its own but also with an extension to give custom classes a rigidbody.
-public class myCircle extends PhysicsObject {
+public class Circle extends PhysicsObject {
   float radius;
   boolean gotHitX;
   boolean gotHitY;
@@ -7,7 +7,7 @@ public class myCircle extends PhysicsObject {
   boolean player;
 
   //needed parameters for a circle velocity are here given a standard velocity of 1.
-  public myCircle(float posX, float posY, float radius)
+  public Circle(float posX, float posY, float radius)
   {
     pos.x = posX;
     pos.y = posY;
@@ -17,7 +17,7 @@ public class myCircle extends PhysicsObject {
   }
 
   //needed parameters for a circle.
-  public myCircle(float posX, float posY, float radius, float xVelocity, float yVelocity)
+  public Circle(float posX, float posY, float radius, float xVelocity, float yVelocity)
   {
     if (posX == mouseX) player=true;
     pos.x = posX;
