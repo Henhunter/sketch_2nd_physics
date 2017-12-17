@@ -1,6 +1,4 @@
-public enum Border{
- LEFT,RIGHT,UP,DOWN 
-}
+
 //This class is the groundelement for every object with physics capabilities. Has the needed attributes every object needs and contains the booleans for custom behaviour
 class PhysicsObject {
   public PVector pos = new PVector();

@@ -5,7 +5,6 @@ public class PhysicsEngine
 {
   boolean collision;
   ArrayList<PhysicsObject> objectArray = new ArrayList<PhysicsObject>();
-  Border Border;
   int NumberOfCollisions;
   //Checks borderCollisions
   void borderCollision()
