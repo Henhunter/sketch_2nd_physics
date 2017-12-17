@@ -148,23 +148,39 @@ public class PhysicsEngine
       newV2Y = (hitSecond.velocity.y * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.y))/(hitFirst.mass+hitSecond.mass);
       //hitSecond.velocity = hitSecond.velocity.add(hitFirst.velocity);
     }
+    
     if (hitFirst.bounceOnImpact == true)
     {
       if (!hitSecond.keepXConstant) 
         hitFirst.velocity.x = newV1X;
       else
         hitFirst.velocity.x = - hitFirst.velocity.x;
-
       if (!hitSecond.keepXConstant|| hitSecond.velocity.y < 0.2)
         hitFirst.velocity.y = newV1Y;
+      
+      if (!hitSecond.keepYConstant) 
+        hitFirst.velocity.y = newV1Y;
+      else
+        hitFirst.velocity.y = - hitFirst.velocity.y;
+      if (!hitSecond.keepYConstant|| hitSecond.velocity.x < 0.2)
+        hitFirst.velocity.x = newV1X;
     }
+    
+    
     if (hitSecond.bounceOnImpact == true)
     {
       if (!hitFirst.keepXConstant)
+        hitSecond.velocity.y =  newV2Y;
+      else
+        hitSecond.velocity.y = -hitSecond.velocity.y;
+      if (!hitFirst.keepYConstant || hitFirst.velocity.x < 0.2)
+        hitSecond.velocity.x =  newV2X;
+ 
+      if (!hitFirst.keepYConstant)
         hitSecond.velocity.x =  newV2X;
       else
         hitSecond.velocity.x = -hitSecond.velocity.x;
-      if (!hitFirst.keepXConstant || hitFirst.velocity.y < 0.2)
+      if (!hitFirst.keepYConstant || hitFirst.velocity.y < 0.2)
         hitSecond.velocity.y =  newV2Y;
     }
   }

@@ -11,6 +11,7 @@ class PhysicsObject {
   float oldMouseY;
   boolean mouseUse = false;
   boolean keepXConstant = false;
+  boolean keepYConstant = false;
   boolean gotHit = true;
   PhysicsObject gotHitBy;
   String type; 
