@@ -1,5 +1,6 @@
 public class myGame extends PhysicsEngine
 {
+
   public myGame()
   {
     for (int i = 0; i<25; i++)
@@ -22,15 +23,21 @@ public class myGame extends PhysicsEngine
       PhysicsObject tempObject = objectArray.get(i);
       tempObject.moveObject();
       tempObject.draw();
-      println(tempObject.pos + " " + tempObject.type );
     } 
-    println("--------------new rotation -----------------");
-    println("NumberOfCollisions: " + NumberOfCollisions);
     collisionDetection();
     borderCollision();
   }
 }
-
+void printtest()
+{
+  println("--------------new rotation -----------------");
+  for (int i=0; i<game2.objectArray.size(); i++) 
+  {
+    PhysicsObject tempObject = game2.objectArray.get(i);
+    println(tempObject.pos + " " + tempObject.type );
+  }
+  println("NumberOfCollisions: " + game2.NumberOfCollisions);
+}
 
 
 boolean gameStart = false;
@@ -72,5 +79,6 @@ public class Pong {
 
 void mousePressed() {
   gameStart = !gameStart;
-  
+  if (!gameStart)
+    printtest();
 }
