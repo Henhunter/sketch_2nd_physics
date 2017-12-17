@@ -3,7 +3,7 @@ public class myGame extends PhysicsEngine
 
   public myGame()
   {
-    for (int i = 0; i<25; i++)
+    for (int i = 0; i<100; i++)
     {
       float size = random(20, 50);
 
@@ -34,7 +34,8 @@ void printtest()
   for (int i=0; i<game2.objectArray.size(); i++) 
   {
     PhysicsObject tempObject = game2.objectArray.get(i);
-    println(tempObject.pos + " " + tempObject.type );
+    if (tempObject.pos.x > 810 || tempObject.pos.x < 10 || tempObject.pos.y > 610 || tempObject.pos.y < 10) 
+      println(tempObject.pos + " " + tempObject.type );
   }
   println("NumberOfCollisions: " + game2.NumberOfCollisions);
 }
