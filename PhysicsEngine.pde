@@ -1,4 +1,4 @@
- //<>// //<>//
+//<>// //<>// //<>//
 
 //the core class that takes care of all interactions between PhysicsObjects
 public class PhysicsEngine
@@ -6,6 +6,7 @@ public class PhysicsEngine
   boolean collision;
   ArrayList<PhysicsObject> objectArray = new ArrayList<PhysicsObject>();
   Border Border;
+  int NumberOfCollisions;
   //Checks borderCollisions
   void borderCollision()
   {
@@ -97,7 +98,31 @@ public class PhysicsEngine
       }
     } else rect.gotHitY = false;
   }
-
+  boolean collisionDetection(PhysicsObject first, PhysicsObject second)
+  {
+    if (first instanceof Circle && second instanceof Circle)
+    {
+      if (circleToCircleDetection((Circle)first, (Circle)second))
+      {
+        return true;
+      }
+    }
+    if (first instanceof Rect && second instanceof Rect)
+    {
+      if (rectToRectDetection((Rect)first, (Rect)second))
+      { 
+        return true;
+      }
+    }
+    if (first instanceof Circle && second instanceof Rect || first instanceof Rect && second instanceof Circle)
+    {
+      if (first instanceof Circle && CircleToRectDetection((Circle)first, (Rect)second))
+        return true;
+      else if (first instanceof Rect && CircleToRectDetection((Circle)second, (Rect)first))
+        return true;
+    }
+    return false;
+  }
   //Start point for collision detection, checks what kind of an instance the objects are and calls the appropiate method to check for collisions(boolean) and then activates the response if the value is true.
   void collisionDetection()
   {
@@ -110,38 +135,45 @@ public class PhysicsEngine
       {
         first = objectArray.get(i);
         second = objectArray.get(j);
-        if (first instanceof Circle && second instanceof Circle)
-        {
-          if (circleToCircleDetection((Circle)first, (Circle)second))
-          {
-            collisionResponse(first, second);
-          }
-        }
-        if (first instanceof Rect && second instanceof Rect)
-        {
-          if (rectToRectDetection((Rect)first, (Rect)second))
-          { 
-            collisionResponse(first, second);
-            first.c = color(random(255), random(255), random(255));
-            second.c = color(random(255), random(255), random(255));
-          }
-        }
-        if (first instanceof Circle && second instanceof Rect || first instanceof Rect && second instanceof Circle)
-        {
-          if (first instanceof Circle && CircleToRectDetection((Circle)first, (Rect)second))
-            collisionResponse(first, second);
-          else if (first instanceof Rect && CircleToRectDetection((Circle)second, (Rect)first))
+        if (collisionDetection(first, second)) {
+          if ( first instanceof Rect && second instanceof Circle)
             collisionResponse(second, first);
+          else
+            collisionResponse(first, second);
         }
+
+        /*if (first instanceof Circle && second instanceof Circle)
+         {
+         if (circleToCircleDetection((Circle)first, (Circle)second))
+         {
+         collisionResponse(first, second);
+         }
+         }
+         if (first instanceof Rect && second instanceof Rect)
+         {
+         if (rectToRectDetection((Rect)first, (Rect)second))
+         { 
+         collisionResponse(first, second);
+         first.c = color(random(255), random(255), random(255));
+         second.c = color(random(255), random(255), random(255));
+         }
+         }
+         if (first instanceof Circle && second instanceof Rect || first instanceof Rect && second instanceof Circle)
+         {
+         if (first instanceof Circle && CircleToRectDetection((Circle)first, (Rect)second))
+         collisionResponse(first, second);
+         else if (first instanceof Rect && CircleToRectDetection((Circle)second, (Rect)first))
+         collisionResponse(second, first);*/
       }
     }
   }
+
   //Calculates the outcome of a collision between two objects. Uses mass and velocity to calculate this. 
   void collisionResponse(PhysicsObject hitFirst, PhysicsObject hitSecond)
   {
     if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
     if (hitSecond.vanishOnImpact == true) objectArray.remove(hitSecond);
-    println(hitFirst.velocity + " " + hitSecond.velocity);
+
     float newV1X=0, newV1Y=0;
     float newV2X=0, newV2Y=0;
     if (hitFirst.bounceOnImpact == true)
@@ -149,7 +181,7 @@ public class PhysicsEngine
       newV1X = (hitFirst.velocity.x * (hitFirst.mass - hitSecond.mass)+(2* hitSecond.mass * hitSecond.velocity.x))/(hitSecond.mass+hitFirst.mass);
       newV1Y = (hitFirst.velocity.y * (hitFirst.mass - hitSecond.mass)+(2* hitSecond.mass * hitSecond.velocity.y))/(hitSecond.mass+hitFirst.mass);
     }
-    println(hitFirst.velocity + " " + hitSecond.velocity);
+
     if (hitSecond.bounceOnImpact == true)
     {
       newV2X = (hitSecond.velocity.x * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.x))/(hitFirst.mass+hitSecond.mass);
@@ -211,7 +243,7 @@ public class PhysicsEngine
       if (first.gotHitBy==second || second.gotHitBy == first)  return false;
       first.c = color(random(255), random(255), random(255));
       second.c = color(random(255), random(255), random(255));
-      println("col");
+
       trueGotHit(first, second);
       return true;
     } else {
@@ -232,7 +264,7 @@ public class PhysicsEngine
       return false;
     }
     if (distY > (rect.h/2 + circle.radius)) {
-     if (circle.gotHitBy==rect || rect.gotHitBy == circle)
+      if (circle.gotHitBy==rect || rect.gotHitBy == circle)
         falseGotHit(circle, rect);
       return false;
     }
@@ -258,7 +290,7 @@ public class PhysicsEngine
       return true;
     } else
     {
-     if (circle.gotHitBy==rect || rect.gotHitBy == circle)
+      if (circle.gotHitBy==rect || rect.gotHitBy == circle)
         falseGotHit(circle, rect);
       return false;
     }

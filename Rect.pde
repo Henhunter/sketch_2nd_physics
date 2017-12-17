@@ -19,6 +19,7 @@ public class Rect extends PhysicsObject {
     velocity.x=xVelocity;
     velocity.y=yVelocity;
     mass=w*h;
+    type = "Rectangle";
   }
 
   //draws the rectangle, draws it on the mouse pos if chosen.

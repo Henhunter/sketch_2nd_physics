@@ -2,7 +2,7 @@ public class myGame extends PhysicsEngine
 {
   public myGame()
   {
-    for (int i = 0; i<10; i++)
+    for (int i = 0; i<25; i++)
     {
       float size = random(20, 50);
 
@@ -22,7 +22,9 @@ public class myGame extends PhysicsEngine
       PhysicsObject tempObject = objectArray.get(i);
       tempObject.moveObject();
       tempObject.draw();
+      println(tempObject.pos + " " + tempObject.type );
     } 
+    println("--------------new rotation -----------------");
     collisionDetection();
     borderCollision();
   }
@@ -69,4 +71,5 @@ public class Pong {
 
 void mousePressed() {
   gameStart = !gameStart;
+  
 }

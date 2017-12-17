@@ -16,6 +16,7 @@ class PhysicsObject {
   boolean keepXConstant = false;
   boolean gotHit = true;
   PhysicsObject gotHitBy;
+  String type; 
  
    //moves the object after calculations
   void moveObject()

@@ -25,6 +25,7 @@ public class Circle extends PhysicsObject {
     velocity.x = xVelocity;
     velocity.y = yVelocity;
     mass=PI*(this.radius*this.radius);
+    type = "Circle";
   }
 
  //draws the circle, draws it on the mouse pos if chosen.
