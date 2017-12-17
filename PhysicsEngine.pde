@@ -136,6 +136,7 @@ public class PhysicsEngine
         first = objectArray.get(i);
         second = objectArray.get(j);
         if (collisionDetection(first, second)) {
+          NumberOfCollisions++;
           if ( first instanceof Rect && second instanceof Circle)
             collisionResponse(second, first);
           else

@@ -25,6 +25,7 @@ public class myGame extends PhysicsEngine
       println(tempObject.pos + " " + tempObject.type );
     } 
     println("--------------new rotation -----------------");
+    println("NumberOfCollisions: " + NumberOfCollisions);
     collisionDetection();
     borderCollision();
   }
