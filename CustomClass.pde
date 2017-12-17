@@ -9,8 +9,8 @@ public class Player extends Rect {
   }
   
   void draw() {
-    fill(c);
+  
     rect(pos.x, pos.y, w, h);
-    fill(255);
+    
   }
 }

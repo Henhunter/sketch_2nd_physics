@@ -11,28 +11,35 @@ public class Circle extends PhysicsObject {
     pos.x = posX;
     pos.y = posY;
     this.radius = radius/2;
+    calculateMass();
     velocity.x = 1;
     velocity.y = 1;
   }
 
   //needed parameters for a circle.
-  public Circle(float posX, float posY, float radius, float xVelocity, float yVelocity)
+  public Circle(float posX, float posY, float diameter, float xVelocity, float yVelocity)
   {
     if (posX == mouseX) player=true;
     pos.x = posX;
     pos.y= posY;
-    this.radius = radius/2;
+    this.radius = diameter/2;
     velocity.x = xVelocity;
     velocity.y = yVelocity;
-    mass=PI*(this.radius*this.radius);
+    calculateMass();
     type = "Circle";
   }
-
- //draws the circle, draws it on the mouse pos if chosen.
+  void setDiameter(float diameter){
+   radius = diameter/2; 
+  }
+  
+  void calculateMass() {
+    mass=PI*(this.radius*this.radius);
+  }
+  
+  //draws the circle, draws it on the mouse pos if chosen.
   public void draw()
   {
-    fill(c);
+
     ellipse(pos.x, pos.y, radius*2, radius*2);
-    fill(255);
   }
 }

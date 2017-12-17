@@ -18,19 +18,29 @@ public class Rect extends PhysicsObject {
     this.h = h;
     velocity.x=xVelocity;
     velocity.y=yVelocity;
-    mass=w*h;
+    calculateMass();
     type = "Rectangle";
   }
-
+ void setWidth(float w){
+  this.w = w;
+  calculateMass();
+ }
+ void setHeight(float h){
+  this.h = h;
+  calculateMass();
+ }
+ 
+ void calculateMass(){
+  mass=w*h; 
+ }
   //draws the rectangle, draws it on the mouse pos if chosen.
   void draw() {
 
-    fill(c);
     if (mouseUse) { 
       pos.x = mouseX; 
       pos.y = mouseY;
     }
     rect(pos.x, pos.y, w, h);
-    fill(255);
+
   }
 }

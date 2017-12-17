@@ -6,7 +6,6 @@ class PhysicsObject {
   boolean vanishOnImpact = false;
   boolean bounceOnImpact = true;
   boolean constrainedInFrame = true;
-  color c = color(255, 255, 255);
   float mass;
   float oldMouseX;
   float oldMouseY;
@@ -15,8 +14,8 @@ class PhysicsObject {
   boolean gotHit = true;
   PhysicsObject gotHitBy;
   String type; 
- 
-   //moves the object after calculations
+
+  //moves the object after calculations
   void moveObject()
   {
     if (mouseUse)
@@ -24,19 +23,43 @@ class PhysicsObject {
     else
       pos = pos.add(velocity);
   }
-//makes it so that is possible to update velocity without hacking the code.
-  void updateVelocity(PVector velocity) {
+  //makes it so that is possible to update velocity without hacking the code.
+  void setVelocity(PVector velocity) {
     this.velocity = velocity;
   }
-//makes it so that is possible to add a velocity without hacking the code.
+  PVector getVelocity() {
+    return velocity;
+  }
+  void setVelocity(float velX, float velY) {
+    velocity.x = velX;
+    velocity.y = velY;
+  }
+  PVector getPos() {
+    return pos;
+  }
+  void setPos(float posX, float posY)
+  {
+    pos.x = posX;
+    pos.y = posY;
+  }
+  void setPos(PVector pos) {
+    this.pos = pos;
+  }
+
+
+  //makes it so that is possible to add a velocity without hacking the code.
   void addVelocity(PVector velocity) {
     this.velocity = this.velocity.add(velocity);
   }
+  void addVelocity(float velX, float velY) {
+    velocity.x += velX;
+    velocity.y += velY;
+  }
 
-//calculates velocity by the difference betweeen the mouse pos and the mouse pos in the last frame.
+  //calculates velocity by the difference betweeen the mouse pos and the mouse pos in the last frame.
   void mouseUpdate()
   {
-    updateVelocity(new PVector(mouseX-oldMouseX, mouseY-oldMouseY));
+    setVelocity(new PVector(mouseX-oldMouseX, mouseY-oldMouseY));
     oldMouseX=mouseX;
     oldMouseY=mouseY;
     if (!keepXConstant)

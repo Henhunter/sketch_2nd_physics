@@ -1,4 +1,4 @@
-//<>// //<>// //<>//
+//<>// //<>// //<>// //<>//
 
 //the core class that takes care of all interactions between PhysicsObjects
 public class PhysicsEngine
@@ -11,11 +11,14 @@ public class PhysicsEngine
   {
     for (int i = 0; i<objectArray.size(); i++)
     {
+
       PhysicsObject PO = objectArray.get(i);
-      if (PO instanceof Circle)
-        borderCollisionCircle(PO);
-      if (PO instanceof Rect)
-        borderCollisionRect(PO);
+      if (PO.constrainedInFrame) {
+        if (PO instanceof Circle)
+          borderCollisionCircle(PO);
+        if (PO instanceof Rect)
+          borderCollisionRect(PO);
+      }
     }
   }
   //These two methods adds and removes PhysicsObjects that needs to be checked.
@@ -50,6 +53,7 @@ public class PhysicsEngine
   //Bordercollision for rectangle, also makes sure that the object is going the right way after impact by forcing the right direction. 
   void borderCollisionRect(PhysicsObject PO)
   {
+
     Rect rect = (Rect)PO;
 
     if (rect.pos.x <= 0 )
@@ -117,13 +121,19 @@ public class PhysicsEngine
   //Calculates the outcome of a collision between two objects. Uses mass and velocity to calculate this. 
   void collisionResponse(PhysicsObject hitFirst, PhysicsObject hitSecond)
   {
-    if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
-    if (hitSecond.vanishOnImpact == true) objectArray.remove(hitSecond);
+    if (hitFirst.vanishOnImpact == true) {
+      objectArray.remove(hitFirst);
+      return;
+    }
+    if (hitSecond.vanishOnImpact == true) {
+      objectArray.remove(hitSecond);
+      return;
+    }
     /*
     This part of our code is heavily inspired by Darran Jamiesons code example on elastic collision
-    we took hes code and converted it so it would fit to our code.
-    URL: https://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
-    */
+     we took hes code and converted it so it would fit to our code.
+     URL: https://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
+     */
     float newV1X=0, newV1Y=0;
     float newV2X=0, newV2Y=0;
     if (hitFirst.bounceOnImpact == true)
@@ -138,22 +148,26 @@ public class PhysicsEngine
       newV2Y = (hitSecond.velocity.y * (hitSecond.mass - hitFirst.mass)+(2.0f* hitFirst.mass * hitFirst.velocity.y))/(hitFirst.mass+hitSecond.mass);
       //hitSecond.velocity = hitSecond.velocity.add(hitFirst.velocity);
     }
-    if (!hitSecond.keepXConstant) 
-      hitFirst.velocity.x = newV1X;
-    else
-      hitFirst.velocity.x = - hitFirst.velocity.x;
+    if (hitFirst.bounceOnImpact == true)
+    {
+      if (!hitSecond.keepXConstant) 
+        hitFirst.velocity.x = newV1X;
+      else
+        hitFirst.velocity.x = - hitFirst.velocity.x;
 
-    if (!hitFirst.keepXConstant)
-      hitSecond.velocity.x =  newV2X;
-    else
-      hitSecond.velocity.x = -hitSecond.velocity.x;
-    if (!hitFirst.keepXConstant || hitFirst.velocity.y < 0.2)
-      hitSecond.velocity.y =  newV2Y;
-
-    if (!hitSecond.keepXConstant|| hitSecond.velocity.y < 0.2)
-      hitFirst.velocity.y = newV1Y;
+      if (!hitSecond.keepXConstant|| hitSecond.velocity.y < 0.2)
+        hitFirst.velocity.y = newV1Y;
+    }
+    if (hitSecond.bounceOnImpact == true)
+    {
+      if (!hitFirst.keepXConstant)
+        hitSecond.velocity.x =  newV2X;
+      else
+        hitSecond.velocity.x = -hitSecond.velocity.x;
+      if (!hitFirst.keepXConstant || hitFirst.velocity.y < 0.2)
+        hitSecond.velocity.y =  newV2Y;
+    }
   }
-
 
 
   //checks if rectangles collides
@@ -209,13 +223,13 @@ public class PhysicsEngine
 
     float distX = Math.abs(circle.pos.x - rect.pos.x-rect.w/2);
     float distY = Math.abs(circle.pos.y - rect.pos.y-rect.h/2);
-    
+
     /*
     This part of our code with disXx > rect.w/2 is a code made by markE on stackoverflow,
-    that we use in our program, implemented with our own code.
-    URL: https://stackoverflow.com/questions/21089959/detecting-collision-of-rectangle-with-circle
-    */
-    
+     that we use in our program, implemented with our own code.
+     URL: https://stackoverflow.com/questions/21089959/detecting-collision-of-rectangle-with-circle
+     */
+
     //first checks if the circle and rectangle are so far away that a fast return false can be made.
     if (distX > (rect.w/2 + circle.radius)) {
       if (circle.gotHitBy==rect || rect.gotHitBy == circle)
