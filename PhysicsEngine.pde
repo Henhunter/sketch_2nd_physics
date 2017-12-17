@@ -7,7 +7,7 @@ public class PhysicsEngine
   ArrayList<PhysicsObject> objectArray = new ArrayList<PhysicsObject>();
   Border Border;
   int NumberOfCollisions;
-  //Checks borderCollisions
+  //Checks borderCollisions for our objects
   void borderCollision()
   {
     for (int i = 0; i<objectArray.size(); i++)
@@ -32,7 +32,7 @@ public class PhysicsEngine
   void borderCollisionCircle(PhysicsObject PO)
   {
     Circle circle = (Circle)PO;
-    
+
     if (circle.pos.x <= circle.radius)
     {
       circle.velocity.x = Math.abs(circle.velocity.x); //math.abs will make any number positive
@@ -66,7 +66,7 @@ public class PhysicsEngine
       rect.velocity.y = -Math.abs(rect.velocity.y);
     }
   }
-  
+
   boolean collisionDetection(PhysicsObject first, PhysicsObject second)
   {
     if (first instanceof Circle && second instanceof Circle)
@@ -120,7 +120,11 @@ public class PhysicsEngine
   {
     if (hitFirst.vanishOnImpact == true) objectArray.remove(hitFirst);
     if (hitSecond.vanishOnImpact == true) objectArray.remove(hitSecond);
-
+    /*
+    This part of our code is heavily inspired by Darran Jamiesons code example on elastic collision
+    we took hes code and converted it so it would fit to our code.
+    URL: https://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
+    */
     float newV1X=0, newV1Y=0;
     float newV2X=0, newV2Y=0;
     if (hitFirst.bounceOnImpact == true)
@@ -155,7 +159,11 @@ public class PhysicsEngine
 
   //checks if rectangles collides
   boolean rectToRectDetection(Rect first, Rect second) {
-
+    /*
+    This part of out code is inspired by the Youtuber: Coding Math, 
+     and hes video about Matematics behind Collision detection.
+     URL: https://www.youtube.com/watch?v=NZHzgXFKfuY&t=672s
+     */
     float maxFirstRectX = max(first.pos.x, first.pos.x+first.w);
     float minFirstRectX = min(first.pos.x, first.pos.x+first.w);
     float maxSecondRectX = max(second.pos.x, second.pos.x+second.w);
@@ -202,6 +210,13 @@ public class PhysicsEngine
 
     float distX = Math.abs(circle.pos.x - rect.pos.x-rect.w/2);
     float distY = Math.abs(circle.pos.y - rect.pos.y-rect.h/2);
+    
+    /*
+    This part of our code with disXx > rect.w/2 is a code made by markE on stackoverflow,
+    that we use in our program, implemented with our own code.
+    URL: https://stackoverflow.com/questions/21089959/detecting-collision-of-rectangle-with-circle
+    */
+    
     //first checks if the circle and rectangle are so far away that a fast return false can be made.
     if (distX > (rect.w/2 + circle.radius)) {
       if (circle.gotHitBy==rect || rect.gotHitBy == circle)
