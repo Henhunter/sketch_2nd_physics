@@ -32,36 +32,20 @@ public class PhysicsEngine
   void borderCollisionCircle(PhysicsObject PO)
   {
     Circle circle = (Circle)PO;
-
+    
     if (circle.pos.x <= circle.radius)
     {
-      if (circle.gotHitX != true)
-      {
-        circle.velocity.x = Math.abs(circle.velocity.x); //math.abs will make any number positive
-        circle.gotHitX = true;
-      }
+      circle.velocity.x = Math.abs(circle.velocity.x); //math.abs will make any number positive
     } else if (circle.pos.x >= width-(circle.radius))
     {
-      if (circle.gotHitX != true)
-      {
-        circle.velocity.x = -Math.abs(circle.velocity.x);
-        circle.gotHitX = true;
-      }
-    } else circle.gotHitX=false;
+      circle.velocity.x = -Math.abs(circle.velocity.x);
+    }
     if (circle.pos.y <= circle.radius)
     {
-      if (circle.gotHitY != true) 
-      {
-        circle.velocity.y = Math.abs(circle.velocity.y);
-        circle.gotHitY = true;
-      }
+      circle.velocity.y = Math.abs(circle.velocity.y);
     } else if (circle.pos.y >= height-(circle.radius)) {
-      if (circle.gotHitY != true) 
-      {
-        circle.velocity.y = -Math.abs(circle.velocity.y);
-        circle.gotHitY = true;
-      }
-    } else circle.gotHitY = false;
+      circle.velocity.y = -Math.abs(circle.velocity.y);
+    }
   }
 
   //Bordercollision for rectangle, also makes sure that the object is going the right way after impact by forcing the right direction. 
@@ -71,33 +55,18 @@ public class PhysicsEngine
 
     if (rect.pos.x <= 0 )
     {
-      if (rect.gotHitX != true)
-      {
-        rect.velocity.x = Math.abs(rect.velocity.x);
-        rect.gotHitX = true;
-      }
+      rect.velocity.x = Math.abs(rect.velocity.x);
     } else if (rect.pos.x >= width-(rect.w)) {
-      if (rect.gotHitX != true)
-      {
-        rect.velocity.x = -Math.abs(rect.velocity.x);
-        rect.gotHitX = true;
-      }
-    } else rect.gotHitX=false;
+      rect.velocity.x = -Math.abs(rect.velocity.x);
+    }
     if ( rect.pos.y <= 0 )
     {
-      if (rect.gotHitY != true) 
-      {
-        rect.velocity.y = Math.abs(rect.velocity.y);
-        rect.gotHitY = true;
-      }
+      rect.velocity.y = Math.abs(rect.velocity.y);
     } else if (rect.pos.y >= height-(rect.h)) {
-      if (rect.gotHitY != true) 
-      {
-        rect.velocity.y = -Math.abs(rect.velocity.y);
-        rect.gotHitY = true;
-      }
-    } else rect.gotHitY = false;
+      rect.velocity.y = -Math.abs(rect.velocity.y);
+    }
   }
+  
   boolean collisionDetection(PhysicsObject first, PhysicsObject second)
   {
     if (first instanceof Circle && second instanceof Circle)
@@ -142,29 +111,6 @@ public class PhysicsEngine
           else
             collisionResponse(first, second);
         }
-
-        /*if (first instanceof Circle && second instanceof Circle)
-         {
-         if (circleToCircleDetection((Circle)first, (Circle)second))
-         {
-         collisionResponse(first, second);
-         }
-         }
-         if (first instanceof Rect && second instanceof Rect)
-         {
-         if (rectToRectDetection((Rect)first, (Rect)second))
-         { 
-         collisionResponse(first, second);
-         first.c = color(random(255), random(255), random(255));
-         second.c = color(random(255), random(255), random(255));
-         }
-         }
-         if (first instanceof Circle && second instanceof Rect || first instanceof Rect && second instanceof Circle)
-         {
-         if (first instanceof Circle && CircleToRectDetection((Circle)first, (Rect)second))
-         collisionResponse(first, second);
-         else if (first instanceof Rect && CircleToRectDetection((Circle)second, (Rect)first))
-         collisionResponse(second, first);*/
       }
     }
   }
@@ -242,8 +188,6 @@ public class PhysicsEngine
     if (distance<(first.radius + second.radius))
     {
       if (first.gotHitBy==second || second.gotHitBy == first)  return false;
-      first.c = color(random(255), random(255), random(255));
-      second.c = color(random(255), random(255), random(255));
 
       trueGotHit(first, second);
       return true;
