@@ -9,5 +9,6 @@ void setup()
 
 void draw()
 {
-  game2.draw();
+  if (gameStart)
+    game2.draw();
 }
